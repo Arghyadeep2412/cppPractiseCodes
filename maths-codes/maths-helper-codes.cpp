@@ -349,6 +349,20 @@ long long int getPower(int x, int n) {
     }
 }
 
+long long int getPowerItr(int x, int n) {
+    // this is an iterative solution
+    // time complexity -- O(n), space complexity -- O(1)
+    long long int res = 1;
+    while(n > 0) {
+        if(n & 1) { // same as (n % 2 == 0)
+            res = res * x;
+        }
+        x = x * x;
+        n = n >> 1; // same as n / 2
+    }
+    return res;
+}
+
 int main() {
     string name = "";
     cout << "Please enter your first name" << endl;

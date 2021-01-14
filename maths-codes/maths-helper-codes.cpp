@@ -351,7 +351,7 @@ long long int getPower(int x, int n) {
 
 long long int getPowerItr(int x, int n) {
     // this is an iterative solution
-    // time complexity -- O(n), space complexity -- O(1)
+    // time complexity -- O(log(n)), space complexity -- O(1)
     long long int res = 1;
     while(n > 0) {
         if(n & 1) { // same as (n % 2 == 0)

@@ -363,11 +363,30 @@ long long int getPowerItr(int x, int n) {
     return res;
 }
 
+//-----------------------GET INPUTS AND CHECK IF THEY ARE IN RANGE-----------------
+
+#include<climits>
+int getAndCheckIntInput(int a) {
+    if(a >= INT_MIN && a <= INT_MAX) {
+        cout << "we have it in correct range!!" << endl;
+    } else {
+        a = 0;
+        cout << "not in range!!" << endl;
+        cout << "returning 0" << endl;
+    }
+    return a;
+}
+
 int main() {
     string name = "";
     cout << "Please enter your first name" << endl;
     cin >> name;
     cout << "Good morning " << name << endl;
+    cout << INT_MAX << " " << INT_MIN << endl;
+    cout << "enter an integer" << endl;
+    int a;
+    cin >> a;
+    a = getAndCheckIntInput(a);
+    cout << a;
     return 0;
 }
-

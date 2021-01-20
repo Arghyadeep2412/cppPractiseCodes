@@ -65,6 +65,45 @@ int count(int n) {
     return res;
 }
 
+//-----------------------check if n is a power of 2--------------------
+bool checkPowOf2(int n) {
+    if(n == 0) {
+        return false;
+    }
+
+    while(n > 1) {
+        if((n % 2) != 0) {
+            return false;
+        }
+        n = n / 2;
+    }
+    return true;
+}
+
+bool checkPowOf2BrianKerningham (int n) {
+    bool isPowerOf2 = false;
+    if(n <= 1) {
+        return isPowerOf2;
+    }
+
+    int res = n & (n - 1);
+    // all the bits after the first set(from left) bit in n --- will be set
+    // and the right most set bit will be converted to 0
+    if(res == 0) {
+        isPowerOf2 = true;
+    }
+    return isPowerOf2;
+}
+
+// ------------need to find a number which is occuring odd number of times (only one in the given array)---------------------
+int findOddOccuringNum(int arr[], int length) {
+    int n = arr[0];
+    for(int i = 1; i < length; i++) {
+        n = n ^ arr[i];
+    }
+    return n;
+}
+
 int main() {
     return 0;
 }

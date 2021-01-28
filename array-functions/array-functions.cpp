@@ -28,8 +28,9 @@ int getSecLargestElmEff(int arr[], int n) {
             if(arr[i] < arr[largestInd]) {
                 if(res == (-1)) {
                     res = i;
-                } else if ()
-                res = i;
+                } else if (arr[i] > arr[res]) {
+                    res = i;
+                }
             }
         }
     }
@@ -38,7 +39,7 @@ int getSecLargestElmEff(int arr[], int n) {
 
 //------------------------------get the largest element in an array------------------
 int getLargestElmIndex(int arr[], int n) {
-    // time complexity -- O(n)
+    // time complexity -- O(n) gets the first occurence
     int leargestInd = 0;
     for(int i = 1; i < n; i++) {
         if(arr[leargestInd] < arr[i]) {
@@ -46,6 +47,59 @@ int getLargestElmIndex(int arr[], int n) {
         }
     }
     return leargestInd;
+}
+
+//-----------------check if the array is sorted -- in non decreasing order----------------
+bool isArraySortedNonDec(int arr[], int n) {
+    // time complexity -- O(n)
+    bool isSorted = true;
+    for(int i = 0; i < (n-1); i++) {
+        if(arr[i + 1] < arr[i]) {
+            isSorted = false;
+            break;
+        }
+    }
+    return isSorted;
+}
+
+//-----------reverse an array ---------------------------
+int* getArrayReversed(int arr[], int n) {
+    int startInd = 0;
+    int endInd = n - 1;
+    for(; startInd < endInd; startInd++, endInd--) {
+        arr[startInd] = arr[startInd] ^ arr[endInd];
+        arr[endInd] = arr[startInd] ^ arr[endInd];
+        arr[startInd] = arr[startInd] ^ arr[endInd];
+    }
+    return arr;
+}
+
+//---------remove the duplicate elements in a sorted array towards the front and return the count of unique ones---------
+int returnUniqueElmsCount(int arr[], int n) {
+    int res = 0;
+    if(n > 0) {
+        res = 1;
+    }
+    for(int i = 1; i < n; i++) {
+        if(arr[i] != arr[res - 1]) {
+            arr[res] = arr[i];
+            res++;
+        }
+    }
+    return res;
+}
+
+//----------move 0s to the end-------------------
+void moveZeroToTheEnd(int arr[], int n) {
+    int count = 0;
+    for(int i = 0; i < n; i++) {
+        if(arr[i] != 0) {
+            int temp = arr[count];
+            arr[count] = arr[i];
+            arr[i] = temp;
+            count++;
+        }
+    }
 }
 
 int main() {

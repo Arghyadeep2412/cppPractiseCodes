@@ -377,6 +377,34 @@ int getAndCheckIntInput(int a) {
     return a;
 }
 
+//------------------gets the day of the week ----------------------------
+string dayOfTheWeek(int day, int month, int year) {
+    // [{(CC/4)-2*CC -1}+(YY*5/4)+{(MM+1)*26/10} + DD]
+    // DD/MM/CCYY
+    vector<int> m {11,12,1,2,3,4,5,6,7,8,9,10};
+    int c = year / 100;
+    cout << c << endl;
+    int y = year % 100;
+    if (month < 3) {
+        y = (year - 1) % 100;
+        c = (int)((year - 1) / 100);
+    }
+    cout << y << endl;
+    int x = day + (int)((2.6*m[month - 1]) - 0.2) - 2*c + y + (int)(y / 4) + (int)(c / 4);
+    cout << x << endl;
+    vector<string> dayOfWeek = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
+    if(x > 0) {
+        return (dayOfWeek[(x % 7)]);
+    } else {
+        x = x*(-1);
+        if(x > 7) {
+            x = x % 7;
+        }
+        x = 7 - x;
+        return (dayOfWeek[x]);
+    }
+}
+
 int main() {
     string name = "";
     cout << "Please enter your first name" << endl;

@@ -67,9 +67,9 @@ int* getArrayReversed(int arr[], int n) {
     int startInd = 0;
     int endInd = n - 1;
     for(; startInd < endInd; startInd++, endInd--) {
-        arr[startInd] = arr[startInd] ^ arr[endInd];
-        arr[endInd] = arr[startInd] ^ arr[endInd];
-        arr[startInd] = arr[startInd] ^ arr[endInd];
+        int temp = arr[startInd];
+        arr[startInd] = arr[endInd];
+        arr[endInd] = temp;
     }
     return arr;
 }
@@ -100,6 +100,86 @@ void moveZeroToTheEnd(int arr[], int n) {
             count++;
         }
     }
+}
+
+//------------------left rotate the array by one element-------------
+void leftRotateByOne(int arr[], int n) {
+    int temp = arr[0];
+    for(int i = 1; i < n; i++) {
+        arr[i-1] = arr[i];
+    }
+    arr[n-1] = temp;
+}
+
+//-----------------left rotate an array by d elements----------------
+// we assume that d <= n(length of the array)
+void leftRotateByD(int arr[], int n, int d) {
+    // time complexity -- O(n*d)
+    for(int i = 0; i < d; i++) {
+        leftRotateByOne(arr, n);
+    }
+}
+void reverse(int arr[], int start, int end) {
+    while(start < end) {
+        int temp = arr[start];
+        arr[start] = arr[end];
+        arr[end] = temp;
+        start++;
+        end--;
+    }
+}
+void leftRotateByDReverse(int arr[], int n, int d) {
+    // time complexity -- O(2*n)
+    reverse(arr, 0, d-1);
+    reverse(arr, d, n-1);
+    reverse(arr, 0, n-1);
+}
+
+//------------------need to get the leaders in an array -- an element is a leader if all the elements to the right are smaller than the element
+
+#include<vector>
+vector<int> getLeadersFromArr(int arr[], int n) {
+    int thisLeader = arr[n - 1];
+    vector<int> leaders;
+    leaders.push_back(thisLeader);
+    for(int i = n - 2; i >= 0; i--) {
+        if(thisLeader < arr[i]) {
+            thisLeader = arr[i];
+            leaders.insert(leaders.begin(), thisLeader);
+        }
+    }
+    return leaders;
+}
+
+// get the max difference -> arr[j] - arr[i] such that j > i----------------------------
+
+int maxDiff(int arr[], int n) {
+    int maxRes = arr[1] - arr[0];
+    int min = arr[0];
+    for(int j = 1; j < n; j++) {
+        if((arr[j] - min) > maxRes ) {
+            maxRes = (arr[j] - min);
+        }
+        if(arr[j] < min) {
+            min = arr[j];
+        }
+    }
+    return maxRes;
+}
+
+//--------get the frequencies in a sorted array------------------------
+void printFreqInSortedArr(int arr[], int n) {
+    // time complexity -- O(n)
+    int count = 1;
+    for(int i = 1; i < n; i++) {
+        if(arr[i] == arr[i-1]) {
+            count++;
+        } else {
+            cout << arr[i-1] << " --> " << count << endl;
+            count = 1;
+        }
+    }
+    cout << arr[n-1] << " --> " << count << endl;
 }
 
 int main() {

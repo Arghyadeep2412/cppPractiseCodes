@@ -182,6 +182,134 @@ void printFreqInSortedArr(int arr[], int n) {
     cout << arr[n-1] << " --> " << count << endl;
 }
 
+//-------------we need to get the maximum profit - given the prices of stocks for next few days ----------------
+// - use graphical representation - cumulative effect
+int maxProfit(int price[], int n) {
+    int profit = 0;
+    for(int i = 1; i < n; i++) {
+        if(price[i] > price[i-1]) {
+            profit += (price[i] - price[i-1]);
+        }
+    }
+    return profit;
+}
+
+//------------trapping rain water-----------------
+// input array contains -- non-negetive integers
+int waterStoredMax(int bars[], int n) {
+    int waterStoredTotal = 0;
+    vector<int> leftMax(n);
+    leftMax[0] = bars[0];
+    for(int i = 1; i < n; i++) {
+        leftMax[i] = leftMax[i-1];
+        if(bars[i] > leftMax[i - 1]) {
+            leftMax[i] = bars[i];
+        }
+    }
+
+    vector<int> rightMax(n);
+    rightMax[n-1] = bars[n-1];
+    for(int i = (n-2); i >= 0; i++) {
+        rightMax[i] = rightMax[i + 1];
+        if(bars[i] > rightMax[i+1]) {
+            rightMax[i] = bars[i];
+        }
+    }
+    for(int i = 1; i < (n-1); i++) {
+        int leastSideWall = rightMax[i];
+        if(leftMax[i] < rightMax[i]) {
+            leastSideWall = leftMax[i];
+        }
+        if((leastSideWall - bars[i]) > 0) {
+            waterStoredTotal += (leastSideWall - bars[i]);
+        }
+    }
+    return waterStoredTotal;
+}
+
+//-----------maximum consecutive ones in binary array -- array consists of 0's and 1's-----------
+int maxConsecutiveOnesCount(int arr[], int n) {
+    int maxCount = 0;
+    int thisCount = 0;
+    for(int i = 0; i < n; i++) {
+        if(arr[i] == 1) {
+            thisCount++;
+        } else {
+            if(thisCount > maxCount) {
+                maxCount = thisCount;
+                thisCount = 0;
+            }
+        }
+    }
+
+    if(thisCount > maxCount) {
+        maxCount = thisCount;
+    }
+    return maxCount;
+}
+
+// get the maximum subarray sum --- array might contains -ve integers
+int getMaxSubArraySum(int arr[], int n) {
+    int res = arr[0];
+    int maxEnding = arr[0];
+    for(int i = 1; i < n; i++) {
+        if(arr[i] > (arr[i] + maxEnding)) {
+            maxEnding = arr[i];
+        } else {
+            maxEnding = (arr[i] + maxEnding);
+        }
+
+        if(maxEnding > res) {
+            res = maxEnding;
+        }
+    }
+    return res;
+}
+
+// get the max even odd length ----------------
+int maxEvenOddLength(int arr[], int n) {
+    int maxLength = 1;
+    int thisLength = 1;
+    for(int i = 1; i < n; i++) {
+        if((((arr[i] % 2) == 0) && ((arr[i-1] % 2) != 0)) || ((arr[i] % 2) != 0) && ((arr[i-1] % 2) == 0)) {
+            thisLength++;
+        } else {
+            if(maxLength < thisLength) {
+                maxLength = thisLength;
+            }
+            thisLength = 1;
+        }
+    }
+    if(thisLength > maxLength) {
+        maxLength = thisLength;
+    }
+    return maxLength;
+}
+
+// get the max circular sum-----------------------
+
+int getMaxCircularArraySum(int arr[], int n) {
+    int resNormal = getMaxSubArraySum(arr, n);
+    
+    if(resNormal < 0) {
+        return resNormal;
+    }
+    
+    int arrSum = 0;
+    for(int i = 0; i < n; i++) {
+        arrSum += arr[i];
+        arr[i] = (-arr[i]);
+    }
+    
+    int maxCircular = arrSum + getMaxSubArraySum(arr, n);
+    
+    if(resNormal > maxCircular) {
+        maxCircular = resNormal;
+    }
+    
+    return maxCircular;
+}
+
 int main() {
     return 0;
 }

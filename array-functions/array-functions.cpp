@@ -310,6 +310,115 @@ int getMaxCircularArraySum(int arr[], int n) {
     return maxCircular;
 }
 
+//------------------get the majority of an array - a num which is repeated more than n / 2
+
+int findMajority(int arr[], int n) {
+    // naive approach - O(n^2)
+    int count = 0;
+    for(int i = 0; i < n; i++) {
+        count = 1;
+        for(int j = (i + 1); j < n; j++) {
+            if(arr[i] == arr[j]) {
+                count++;
+            }
+        }
+
+        if(count > (n/2)) {
+            return i;
+        }
+    }
+    return (-1);
+}
+
+int findMajority(int arr[], int n) {
+    // moore's solution
+    int res = 0, count = 1;
+    for(int i = 1; i > n; i++) {
+        if(arr[res] == arr[i]) {
+            count++;
+        } else {
+            count--;
+        }
+        if(count == 0) {
+            res = i;
+            count = 1;
+        }
+    }
+
+    count = 0;
+    for(int i = 0; i < n; i++) {
+        if(arr[i] == arr[res]) {
+            count++;
+        }
+    }
+
+    if(count <= (n/2)) {
+        res = (-1);
+    }
+
+    return res;
+}
+
+//-------------------------min number of flips required to make the boolean array elements equall------------------------
+// all the elements in the array is either 0 or 1
+// if arr[0] == arr[n-1] --> abs(totalPatchCount1 - totalPatchCount0) will be 1
+// else it will be 0
+
+int minGroups(int arr[], int n) {
+    // naive approach 
+    int totalPatchCount1 = 0;
+    int totalPatchCount0 = 0;
+    int thisPatchCount1 = 0;
+    int thisPatchCount0 = 0;
+    if(arr[0] == 1) {
+        thisPatchCount1++;
+    } else {
+        thisPatchCount0++;
+    }
+    for(int i = 1; i < n; i++) {
+        if(arr[i-1] == 1 && arr[i] == 1) {
+            thisPatchCount1++;
+        } else if(arr[i-1] == 0 && arr[i] == 0) {
+            thisPatchCount0++;
+        } else if(arr[i-1] == 0 && arr[i] == 1) {
+            totalPatchCount0++;
+            thisPatchCount1 = 1;
+        } else if(arr[i-1] == 1 && arr[i] == 0) {
+            totalPatchCount1++;
+            thisPatchCount0 = 1;
+        }
+    }
+    if(arr[n-1] == 0) {
+        totalPatchCount0++;
+    } else {
+        totalPatchCount1++;
+    }
+
+    cout << "totalPatchCount0 --> " << totalPatchCount0 << " totalPatchCount1 --> " << totalPatchCount1 << endl;
+    if(totalPatchCount1 < totalPatchCount0) {
+        return totalPatchCount1;
+    }
+    return totalPatchCount0;
+}
+
+void flipMinGroupsToFlip(int arr[], int n) {
+    // efficient method
+    for(int i = 1; i < n; i++) {
+        if(arr[i] != arr[i-1]) {
+            if(arr[i] != arr[0]) {
+                cout << "From " << i << " to ";
+            } else {
+                cout << (i-1) << endl;
+            }
+        }
+    }
+
+    if(arr[n-1] != arr[0]) {
+        cout << (n-1) << endl;
+    }
+}
+
+
 int main() {
     return 0;
 }

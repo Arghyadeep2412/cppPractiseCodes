@@ -418,6 +418,110 @@ void flipMinGroupsToFlip(int arr[], int n) {
     }
 }
 
+// window sliding technique---------------------------
+// need to get the max sum of consecutive k elms
+int getMax(int arr[], int n, int k) {
+    int currSum = 0;
+    for(int i = 0; i < k; i++) {
+        currSum += arr[i];
+    }
+    int maxSum = currSum;
+    for(int i = k; i < n; i++) {
+        currSum += (arr[i] - arr[i-k]);
+        if(currSum > maxSum) {
+            maxSum = currSum;
+        }
+    }
+    return maxSum;
+}
+
+// window sliding technique----- given an unsorted array of non-negetive integers, find if there is a subarray with given sum
+// this solution is only worth when we have non-negetive elements
+vector<int> getSubArray(int arr[], int n, int k) {
+    int startInd = 0;
+    int endInd = 0;
+    int currSum = arr[startInd];
+    vector<int> res;
+    while(endInd < n) {
+        if(currSum < k) {
+            endInd += 1;
+            currSum += arr[endInd];
+        } else if(currSum > k) {
+            if(startInd == endInd) {
+                startInd = startInd + 1;
+                endInd = endInd + 1;
+                currSum = arr[startInd];
+            } else {
+                currSum -= arr[startInd];
+                startInd += 1;
+            }
+        } else {
+            res.push_back(startInd);
+            res.push_back(endInd);
+            break;
+        }
+    }
+    return res;
+}
+
+// get the first m of n-bonachi numberseries ------------------------------------------
+// if n = 3, first 3 numbers are 0,0,1
+
+vector<int> getFirstMofNbonachiSeries(int n, int m) {
+    vector<int> res(m, 0);
+    if(m < n) {
+        return res;
+    }
+    res[n-1] = 1;
+    int currSum = 1;
+    for(int i = n; i < m; i++) {
+        res[i] = currSum;
+        currSum += (res[i] - res[i-n]);
+    }
+    return res;
+}
+
+// count distinct element in every window of size k ---------------
+// inp arr = [1,2,1,3,4,3,3] --> output arr = [3,4,3,2] ---> need to solve
+
+// prefix sum -- 
+// inp arr = [2,8,3,9,6,5,4] -- query --> getSum(0,2) = 13; getSum(1,3) = 20
+int getSumByPreFixSumTechnique(int arr[], int n, int l, int r) {
+    int sum = 0;
+    vector<int> prefixSum;
+    prefixSum.push_back(arr[0]);
+    for(int i = 1; i < n; i++) {
+        prefixSum.push_back(arr[i] + prefixSum[i-1]);
+    }
+    if(l == 0) {
+        sum = prefixSum[r];
+    } else {
+        sum = prefixSum[r] - prefixSum[l-1];
+    }
+    return sum;
+}
+
+// given an array of integers - check if there is an equilibrium point -> sum of elements to the left == sum of elements to the right
+// this is based on prefix sum technique
+bool isEquilibriumPresent(int arr[], int n) {
+    bool equilibPointPresent = false;
+    int totalSum = 0;
+    for(int i = 0; i < n; i++) {
+        totalSum += arr[i];
+    }
+
+    int leftSum = 0;
+    for(int i = 0; i < n; i++) {
+        if((totalSum - arr[i]) == leftSum) {
+            equilibPointPresent = true;
+            break;
+        }
+        leftSum += arr[i];
+        totalSum -= arr[i];
+    }
+    return equilibPointPresent;
+}
+
 
 int main() {
     return 0;

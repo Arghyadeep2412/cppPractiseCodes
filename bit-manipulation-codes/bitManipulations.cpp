@@ -80,6 +80,8 @@ bool checkPowOf2(int n) {
     return true;
 }
 
+// Subtracting 1 from a decimal number flips all the bits after the rightmost set bit(which is 1) including the rightmost set bit.
+
 bool checkPowOf2BrianKerningham (int n) {
     bool isPowerOf2 = false;
     if(n <= 1) {

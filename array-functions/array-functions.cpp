@@ -209,7 +209,7 @@ int waterStoredMax(int bars[], int n) {
 
     vector<int> rightMax(n);
     rightMax[n-1] = bars[n-1];
-    for(int i = (n-2); i >= 0; i++) {
+    for(int i = (n-2); i >= 0; i--) {
         rightMax[i] = rightMax[i + 1];
         if(bars[i] > rightMax[i+1]) {
             rightMax[i] = bars[i];
@@ -522,6 +522,76 @@ bool isEquilibriumPresent(int arr[], int n) {
     return equilibPointPresent;
 }
 
+//Smallest positive missing number -- https://practice.geeksforgeeks.org/problems/smallest-positive-missing-number-1587115621/1/?track=DSASP-Arrays&batchId=154
+int shiftAllNegetivesTowardsStart(int arr[], int n) {
+    int res = 0;
+    for(int i = 0; i < n; i++) {
+        if(arr[i] <= 0) {
+            int temp = arr[i];
+            arr[i] = arr[res];
+            arr[res] = temp;
+            res++;
+        }
+    }
+    return (res);
+}
+
+int findMissingPositive(int arr[], int size)
+{
+	int i;
+
+	// Mark arr[i] as visited by
+	// making arr[arr[i] - 1] negative.
+	// Note that 1 is subtracted
+	// because index start
+	// from 0 and positive numbers start from 1
+	for (i = 0; i < size; i++) {
+		if (abs(arr[i]) - 1 < size && arr[abs(arr[i]) - 1] > 0)
+			arr[abs(arr[i]) - 1] = -arr[abs(arr[i]) - 1];
+	}
+
+	// Return the first index
+	// value at which is positive
+	for (i = 0; i < size; i++)
+		if (arr[i] > 0)
+
+			// 1 is added because
+			// indexes start from 0
+			return i + 1;
+
+	return size + 1;
+}
+
+int findMissing(int arr[], int size)
+{
+
+	// First separate positive
+	// and negative numbers
+	int shift = shiftAllNegetivesTowardsStart(arr, size);
+
+	// Shift the array and call
+	// findMissingPositive for
+	// positive part
+    // yhi sara khel hai //////////////////////////////VVIMP LINE/////////
+	return findMissingPositive(arr + shift, size - shift);
+}
+
+// Rearrange Array Alternately - https://practice.geeksforgeeks.org/problems/-rearrange-array-alternately-1587115620/1/?track=DSASP-Arrays&batchId=154
+
+void rightRotateByOne(int arr[], int n) {
+    int temp = arr[n-1];
+    for(int i = n-2; i >= 0; i--) {
+        arr[i+1] = arr[i];
+    }
+    arr[0] = temp;
+}
+
+void rearrangeArrayAlt(int arr[], int n) {
+    int loopTill = (n/2) + 1;
+    for(int i = 0; i <= loopTill; i+=2) {
+        rightRotateByOne(arr+i, n-i);
+    }
+}
 
 int main() {
     return 0;

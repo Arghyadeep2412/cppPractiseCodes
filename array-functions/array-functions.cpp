@@ -1,6 +1,41 @@
 #include<iostream>
 using namespace std;
 
+int solveRec(int arr[], int i, int j) {
+    if(i >= j) {
+        return 0;
+    }
+    if(arr[i] <= arr[j]) {
+        return j-i;
+    }
+    int ans1 = solveRec(arr, i+1, j);
+    int ans2 = solveRec(arr, i, j-1);
+    return max(ans1, ans2);
+}
+
+int solveMem(int arr[], int i, int j, vector<vector<int>>& dp) {
+    if(i >= j) {
+        return 0;
+    }
+    if(dp[i][j] > -1) {
+        return dp[i][j];
+    }
+    if(arr[i] <= arr[j]) {
+        return j-i;
+    }
+    int ans1 = solveRec(arr, i+1, j);
+    int ans2 = solveRec(arr, i, j-1);
+    dp[i][j] = max(ans1, ans2);
+    return dp[i][j];
+}
+int maxIndexDiff(int A[], int N) 
+{
+    vector<vector<int>> dp(N+1, vector<int>(N+1, -1));
+    return solveMem(A, 0, N-1, dp);
+    return solveRec(A, 0, N-1);
+    // Your code here
+}
+
 //----------------------------get the second largest element in an array------------------
 int getSecLargestElmInd(int arr[], int n) {
     // this traveses the whole array twice!

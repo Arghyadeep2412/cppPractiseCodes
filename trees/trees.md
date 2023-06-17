@@ -19,6 +19,8 @@
       2. PreOrder - root - left - right
       3. PostOrder - left right root
    2. Breadth first search - level order traversal
+9. To create a unique binary tree
+   1.  you always need inorder-postorder or inorder-preorder
 
 
 
@@ -1532,5 +1534,135 @@ int solve(TreeNode* root) {
 
 int countNodes(TreeNode* root) {
     return solve(root);
+}
+```
+
+## Question 27: [Construct Tree from Inorder & Preorder](https://practice.geeksforgeeks.org/problems/construct-tree-1/1?utm_source=gfg&utm_medium=article&utm_campaign=bottom_sticky_on_article)
+
+### Statement:
+Given 2 Arrays of Inorder and preorder traversal. The tree can contain duplicate elements. Construct a tree and print the Postorder traversal
+
+Input:
+N = 4
+inorder[] = {1 6 8 7}
+preorder[] = {1 6 7 8}
+Output: 8 7 6 1
+
+Input:
+N = 6
+inorder[] = {3 1 4 0 5 2}
+preorder[] = {0 1 3 4 2 5}
+
+Output: 3 4 1 5 2 0
+
+Explanation: The tree will look like
+```
+       0
+    /     \
+   1       2
+ /   \    /
+3    4   5
+```
+
+### Solution
+#### Explanation
+1. in preorder - the first element will always be the root element
+2. need to figure out the 8 variables accordingly to create the tree
+   
+```c++
+Node* solve(int in[], int inStart, int inEnd, int pre[], int preStart, int preEnd) {
+    if(inStart > inEnd) {
+        return NULL;
+    }
+    int root = pre[preStart];
+    int rootIdxIn = -1;
+    for(int i = inStart; i <= inEnd; i++) {
+        if(in[i] == root) {
+            rootIdxIn = i;
+        }
+    }
+    
+    int leftInStart, leftInEnd, rightInStart, rightInEnd;
+    int leftPreStart, leftPreEnd, rightPreStart, rightPreEnd;
+    
+    leftInStart = inStart;
+    leftInEnd = rootIdxIn-1;
+    rightInStart = rootIdxIn+1;
+    rightInEnd = inEnd;
+    
+    leftPreStart = preStart+1;
+    leftPreEnd = leftInEnd-leftInStart+leftPreStart;
+    rightPreStart = leftPreEnd+1;
+    rightPreEnd = preEnd;
+    
+    Node* rootNode = new Node(root);
+    rootNode -> left = solve(in, leftInStart, leftInEnd, pre, leftPreStart, leftPreEnd);
+    rootNode -> right = solve(in, rightInStart, rightInEnd, pre, rightPreStart, rightPreEnd);
+    return rootNode;
+}
+
+Node* buildTree(int in[],int pre[], int n)
+{
+    return solve(in, 0, n-1, pre, 0, n-1);
+}
+```
+
+## Question 28: [Tree from Postorder and Inorder](https://practice.geeksforgeeks.org/problems/tree-from-postorder-and-inorder/1?utm_source=gfg&utm_medium=article&utm_campaign=bottom_sticky_on_article)
+
+### Statement:
+Given inorder and postorder traversals of a Binary Tree in the arrays in[] and post[] respectively. The task is to construct the binary tree from these traversals.
+
+Input:
+N = 8
+in[] = 4 8 2 5 1 6 3 7
+post[] =8 4 5 2 6 7 3 1
+
+Output: 1 2 4 8 5 3 6 7
+
+Explanation: For the given postorder and
+inorder traversal of tree the  resultant
+binary tree will be
+```
+           1
+       /      \
+     2         3
+   /  \      /  \
+  4    5    6    7
+   \
+     8
+```
+### Solution
+```c++
+Node* solve(int in[], int inStart, int inEnd, int post[], int postStart, int postEnd) {
+    if(inStart > inEnd) {
+        return NULL;
+    }
+    int root = post[postEnd];
+    int inRootIdx = -1;
+    for(int i = inStart; i <= inEnd; i++) {
+        if(in[i] == root) {
+            inRootIdx = i;
+            break;
+        }
+    }
+    
+    int leftInStart, leftInEnd, rightInStart, rightInEnd;
+    int leftPostStart, leftPostEnd, rightPostStart, rightPostEnd;
+    
+    leftInStart = inStart; leftInEnd = inRootIdx-1;
+    rightInStart = inRootIdx +1; rightInEnd = inEnd;
+    
+    leftPostStart = postStart; leftPostEnd = leftInEnd-leftInStart+leftPostStart;
+    rightPostStart = leftPostEnd+1; rightPostEnd = postEnd-1;
+    
+    Node* rootNode = new Node(root);
+    rootNode -> left = solve(in, leftInStart, leftInEnd, post, leftPostStart, leftPostEnd);
+    rootNode -> right = solve(in, rightInStart, rightInEnd, post, rightPostStart, rightPostEnd);
+    return rootNode;
+}
+
+Node *buildTree(int in[], int post[], int n) {
+    // Your code here
+    return solve(in, 0, n-1, post, 0, n-1);
 }
 ```

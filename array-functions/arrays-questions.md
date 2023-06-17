@@ -285,3 +285,66 @@ int findMissing(int arr[], int n) {
     // return -1;
 }
 ```
+## Question 7: [Peak element](https://practice.geeksforgeeks.org/problems/peak-element/1?page=1&difficulty[]=0&category[]=Arrays&sortBy=submissions)
+
+### Statement
+An element is called a peak element if its value is not smaller than the value of its adjacent elements(if they exists).
+Given an array arr[] of size N, Return the index of any one of its peak elements.
+Note: The generated output will always be 1 if the index that you return is correct. Otherwise output will be 0.
+
+Input:
+N = 3
+arr[] = {3,4,2}
+
+Possible Answer: 1
+
+Output: 1
+
+Explanation: 4 (at index 1) is the 
+peak element as it is greater than 
+it's neighbor elements 3 and 2.
+If 1 is returned then the generated output will be 1 else 0.
+
+### Solution:
+```c++
+int solveLogn(int arr[], int n) {
+    int low = 0;
+    int high = n-1;
+    int mid = low + (high-low)/2;
+    while(low <= high) {
+        mid = low + (high-low)/2;
+        if(mid == 0 && arr[mid] >= arr[mid+1]) {
+            return mid;
+        }
+        if(mid == n-1 && arr[mid] >= arr[mid-1]) {
+            return mid;
+        }
+        if(arr[mid] >= arr[mid-1] && arr[mid] >= arr[mid+1]) {
+            return mid;
+        }
+        if(mid > 0 && arr[mid-1] > arr[mid]) {
+            high = mid-1;
+        } else {
+            low = mid+1;
+        }
+    }
+    return -1;
+}
+int peakElement(int arr[], int n)
+{
+    return solveLogn(arr, n);
+    // Your code here
+    if(arr[0] >= arr[1]) {
+        return 0;
+    }
+    if(arr[n-1] >= arr[n-2]) {
+        return n-1;
+    }
+    for(int i = 1; i < n-1; i++) {
+        if(arr[i] >= arr[i-1] && arr[i] >= arr[i+1]) {
+            return i;
+        }
+    }
+    return -1;
+}
+```

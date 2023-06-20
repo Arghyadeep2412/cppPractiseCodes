@@ -620,6 +620,71 @@ int remove_duplicate(int arr[],int n) {
 }
 ```
 
+## Question 3: [Quick left rotations](https://practice.geeksforgeeks.org/problems/quick-left-rotation3806/1?utm_source=youtube&utm_medium=collab_striver_ytdescription&utm_campaign=quick-left-rotation)
+
+### Statement:
+Given an array arr[] of size N and an integer K, the task is to left rotate the array K indexes
+
+Example 1:
+Input: N = 7, K = 2, arr[] = {1, 2, 3, 4, 5, 6, 7}
+Output: 3 4 5 6 7 1 2
+Explanation: Rotation of the above 
+array by 2 will make the output array .
+
+### Solution:
+```c++
+void reverseArr(int arr[], int low, int high) {
+    while(low < high) {
+        int temp = arr[low];
+        arr[low] = arr[high];
+        arr[high] = temp;
+        low++; high--;
+    }
+}
+void leftRotate(int arr[], int k, int n) 
+{
+    if(k >= n && (k % n) == 0) {
+        return;
+    }
+    if(k > n) {
+        k = k % n;
+    }
+    int d = k;
+    reverseArr(arr, 0, d-1);
+    reverseArr(arr, d, n-1);
+    reverseArr(arr, 0, n-1);
+}
+```
+
+## Question 4: [Move all 0s to the end of array](https://practice.geeksforgeeks.org/problems/move-all-zeroes-to-end-of-array0751/1?utm_source=youtube&utm_medium=collab_striver_ytdescription&utm_campaign=move-all-zeroes-to-end-of-array)
+
+### Statement:
+Given an array arr[] of N positive integers. Push all the zeros of the given array to the right end of the array while maitaining the order of non-zero elements.
+
+Example 1:
+
+Input:
+N = 5, Arr[] = {3, 5, 0, 0, 4}
+Output: 3 5 4 0 0
+Explanation: The non-zero elements
+preserve their order while the 0
+elements are moved to the right.
+
+### Solution:
+```c++
+void pushZerosToEnd(int arr[], int n) {
+    int currIdx = 0;
+    for(int i = 0; i < n; i++) {
+        if(arr[i] > 0) {
+            int temp = arr[i];
+            arr[i] = arr[currIdx];
+            arr[currIdx] = temp;
+            currIdx++;
+        }
+    }
+}
+```
+
 # Array - medium
 ## Question 1: [Find all pairs with a given sum](https://practice.geeksforgeeks.org/problems/find-all-pairs-whose-sum-is-x5808/1?utm_source=youtube&utm_medium=collab_striver_ytdescription&utm_campaign=find-all-pairs-whose-sum-is-x)
 
